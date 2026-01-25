@@ -46,3 +46,6 @@ local-scripts/
 booklore-ui/test-results/
 booklore-api/src/main/resources/application-local.yaml
 /shared/
+
+/.gorev/
+/docs/ideas/
