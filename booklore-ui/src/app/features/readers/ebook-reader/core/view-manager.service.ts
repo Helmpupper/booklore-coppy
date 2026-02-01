@@ -9,7 +9,7 @@ import {EpubStreamingService, EpubBookInfo} from './epub-streaming.service';
 export type {ViewEvent, TextSelection} from './event.service';
 export type {PageInfo, ThemeInfo} from '../shared/header-footer.util';
 
-interface TocItem {
+export interface TocItem {
   label: string;
   href: string;
   subitems?: TocItem[];
@@ -141,6 +141,28 @@ export class ReaderViewManagerService {
     this.view?.next();
   }
 
+  nextAsync(): Observable<void> {
+    if (!this.view) {
+      return of(undefined);
+    }
+    return new Observable(subscriber => {
+      const handler = () => {
+        this.view?.removeEventListener('relocate', handler);
+        subscriber.next();
+        subscriber.complete();
+      };
+      this.view.addEventListener('relocate', handler, { once: true });
+      this.view.next();
+
+      // Timeout fallback in case relocate doesn't fire
+      setTimeout(() => {
+        this.view?.removeEventListener('relocate', handler);
+        subscriber.next();
+        subscriber.complete();
+      }, 1000);
+    });
+  }
+
   getRenderer(): any {
     return this.view?.renderer;
   }
@@ -241,6 +263,94 @@ export class ReaderViewManagerService {
   getCoverUrl(): Observable<string | null> {
     return this.getCover().pipe(
       map(blob => blob ? URL.createObjectURL(blob) : null)
+    );
+  }
+
+  /**
+   * Get the current CFI directly from the view's last location.
+   * This returns the live value, not a cached one.
+   */
+  getCurrentCfi(): string | null {
+    try {
+      const lastLocation = this.view?.lastLocation;
+      if (lastLocation?.cfi) {
+        return lastLocation.cfi;
+      }
+      // Fallback to getting CFI from current position
+      if (lastLocation?.start?.cfi) {
+        return lastLocation.start.cfi;
+      }
+    } catch {
+      // Ignore errors
+    }
+    return null;
+  }
+
+  /**
+   * Get the current section index from the renderer's loaded content.
+   */
+  getCurrentSectionIndex(): number {
+    try {
+      // Try getting index from renderer contents (most reliable)
+      const contents = this.view?.renderer?.getContents?.();
+      if (contents && contents.length > 0 && contents[0].index !== undefined) {
+        return contents[0].index;
+      }
+      // Fallback to lastLocation
+      const lastLocation = this.view?.lastLocation;
+      if (lastLocation?.index !== undefined) {
+        return lastLocation.index;
+      }
+    } catch {
+      // Ignore errors
+    }
+    return -1;
+  }
+
+  /**
+   * Get the total number of sections in the book.
+   */
+  getTotalSections(): number {
+    try {
+      // Try multiple possible locations for sections count
+      if (this.view?.book?.sections?.length) {
+        return this.view.book.sections.length;
+      }
+      // Fallback: try spine
+      if (this.view?.book?.spine?.length) {
+        return this.view.book.spine.length;
+      }
+    } catch {
+      // Ignore errors
+    }
+    return 0;
+  }
+
+  /**
+   * Navigate to the next section (chapter).
+   * Returns true if navigation occurred, false if already at last section.
+   */
+  goToNextSection(): Observable<boolean> {
+    const currentIndex = this.getCurrentSectionIndex();
+    const totalSections = this.getTotalSections();
+
+    console.log('[ViewManager] goToNextSection:', {currentIndex, totalSections});
+
+    if (currentIndex < 0 || totalSections === 0) {
+      console.log('[ViewManager] Cannot determine position, falling back to view.next()');
+      // Fall back to regular next() if we can't determine section info
+      return this.nextAsync().pipe(map(() => true));
+    }
+
+    if (currentIndex >= totalSections - 1) {
+      console.log('[ViewManager] Already at last section');
+      return of(false);
+    }
+
+    console.log('[ViewManager] Navigating to section:', currentIndex + 1);
+    return this.goTo(currentIndex + 1).pipe(
+      map(() => true),
+      catchError(() => of(false))
     );
   }
 

@@ -1,0 +1,163 @@
+@if (state && state.active) {
+  <div
+    class="rsvp-overlay"
+    [style.background]="theme.bg"
+    [style.color]="theme.fg"
+    [style.--rsvp-accent]="theme.link"
+    [style.--rsvp-fg]="theme.fg"
+    [style.--rsvp-bg]="theme.bg"
+    (touchstart)="onTouchStart($event)"
+    (touchend)="onTouchEnd($event)">
+
+    <div class="rsvp-header">
+      <button class="rsvp-close-btn" (click)="onClose()" title="Close (Esc)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <div class="rsvp-chapter-selector">
+        <button class="rsvp-chapter-btn" (click)="toggleChapterDropdown()" title="Select Chapter">
+          <span class="chapter-label">{{ currentChapterLabel }}</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+        @if (showChapterDropdown) {
+          <div class="rsvp-chapter-dropdown">
+            @for (chapter of flatChapters; track chapter.href) {
+              <button
+                class="rsvp-chapter-item"
+                [class.active]="isChapterActive(chapter.href)"
+                [style.padding-left.rem]="0.75 + chapter.level * 1"
+                (click)="onChapterSelect(chapter.href)">
+                {{ chapter.label }}
+              </button>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="rsvp-wpm-display">{{ state!.wpm }} WPM</div>
+    </div>
+
+    @if (!state!.playing && countdown === null) {
+      <div class="rsvp-context-panel">
+        <div class="context-header">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 6h16M4 12h16M4 18h10"/>
+          </svg>
+          <span>Context</span>
+        </div>
+        <div class="context-text">
+          <span class="context-before">{{ contextBefore }} </span>
+          <span class="context-current">{{ currentWordText }}</span>
+          <span class="context-after"> {{ contextAfter }}</span>
+        </div>
+      </div>
+    }
+
+    <div class="rsvp-content">
+      <div class="rsvp-focus-area">
+        <div class="rsvp-vertical-guide">
+          <div class="guide-line guide-line-top"></div>
+          <div class="rsvp-word-section">
+            @if (countdown !== null) {
+              <div class="countdown-container">
+                <span class="countdown-number">{{ countdown }}</span>
+              </div>
+            }
+            <div class="rsvp-word-container">
+              @if (currentWord) {
+                <span class="word-before">{{ wordBefore }}</span>
+                <span class="word-orp">{{ orpChar }}</span>
+                <span class="word-after">{{ wordAfter }}</span>
+              } @else {
+                <span class="word-placeholder">Ready</span>
+              }
+            </div>
+          </div>
+          <div class="guide-line guide-line-bottom"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="rsvp-footer">
+      <div class="rsvp-progress-section">
+        <div class="rsvp-progress-header">
+          <span class="rsvp-progress-label">Chapter Progress</span>
+          <span class="rsvp-progress-stats">
+            {{ state!.currentIndex + 1 | number }} / {{ state!.words.length | number }} words
+            <span class="rsvp-time-remaining" *ngIf="timeRemaining">· {{ timeRemaining }} left</span>
+          </span>
+        </div>
+        <div
+          class="rsvp-progress-bar"
+          (click)="onProgressBarClick($event)"
+          title="Click to seek">
+          <div class="rsvp-progress-fill" [style.width.%]="state!.progress"></div>
+          <div class="rsvp-progress-thumb" [style.left.%]="state!.progress"></div>
+        </div>
+      </div>
+
+      <div class="rsvp-controls">
+        <div class="rsvp-pause-control">
+          <label class="rsvp-pause-label" title="Extra pause on punctuation (periods, commas, etc.)">
+            Pause:
+            <select
+              class="rsvp-pause-select"
+              [value]="state!.punctuationPauseMs"
+              (change)="onPunctuationPauseChange($event)">
+              @for (option of punctuationPauseOptions; track option) {
+                <option [value]="option">{{ option }}ms</option>
+              }
+            </select>
+          </label>
+        </div>
+
+        <div class="rsvp-playback-controls">
+          <button class="rsvp-btn rsvp-btn-skip" (click)="onSkipBackward()" title="Back 15 words (Shift+Left)">
+            <span class="skip-label">15</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/>
+            </svg>
+          </button>
+
+          <button class="rsvp-btn rsvp-btn-play" (click)="onPlayPause()" [title]="state!.playing ? 'Pause (Space)' : 'Play (Space)'">
+            @if (state!.playing) {
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+              </svg>
+            } @else {
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            }
+          </button>
+
+          <button class="rsvp-btn rsvp-btn-skip" (click)="onSkipForward()" title="Forward 15 words (Shift+Right)">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/>
+            </svg>
+            <span class="skip-label">15</span>
+          </button>
+        </div>
+
+        <div class="rsvp-speed-controls">
+          <button class="rsvp-btn rsvp-btn-small" (click)="onDecreaseSpeed()" title="Slower (Left/Down)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14"/>
+            </svg>
+          </button>
+          <span class="rsvp-speed-value">{{ state!.wpm }}</span>
+          <button class="rsvp-btn rsvp-btn-small" (click)="onIncreaseSpeed()" title="Faster (Right/Up)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 5v14M5 12h14"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
