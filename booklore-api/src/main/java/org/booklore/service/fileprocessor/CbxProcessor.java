@@ -290,6 +290,9 @@ public class CbxProcessor extends AbstractFileProcessor implements BookFileProce
                         .collect(Collectors.toSet());
                 bookCreatorService.addTagsToBook(validTags, bookEntity);
             }
+            if (extracted.getPurchaseDate() != null) {
+                bookEntity.setPurchaseDate(extracted.getPurchaseDate());
+            }
             if (extracted.getComicMetadata() != null) {
                 saveComicMetadata(bookEntity, extracted.getComicMetadata());
             }

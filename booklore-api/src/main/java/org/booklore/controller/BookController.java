@@ -9,6 +9,7 @@ import org.booklore.model.dto.request.AttachBookFileRequest;
 import org.booklore.model.dto.request.CreatePhysicalBookRequest;
 import org.booklore.model.dto.request.DuplicateDetectionRequest;
 import org.booklore.model.dto.request.PersonalRatingUpdateRequest;
+import org.booklore.model.dto.request.PurchaseDateUpdateRequest;
 import org.booklore.model.dto.request.ReadProgressRequest;
 import org.booklore.model.dto.request.ReadStatusUpdateRequest;
 import org.booklore.model.dto.request.ShelvesAssignmentRequest;
@@ -265,6 +266,16 @@ public class BookController {
         }
         List<PersonalRatingUpdateResponse> updatedBooks = bookUpdateService.resetPersonalRating(bookIds);
         return ResponseEntity.ok(updatedBooks);
+    }
+
+    @Operation(summary = "Update purchase date", description = "Update the purchase date for one or more books.")
+    @ApiResponse(responseCode = "204", description = "Purchase date updated successfully")
+    @PutMapping("/purchase-date")
+    @PreAuthorize("@securityUtil.canEditMetadata() or @securityUtil.isAdmin()")
+    public ResponseEntity<Void> updatePurchaseDate(
+            @Parameter(description = "Purchase date update request") @RequestBody @Valid PurchaseDateUpdateRequest request) {
+        bookUpdateService.updatePurchaseDate(request.bookIds(), request.purchaseDate());
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Find duplicate books", description = "Detect potential duplicate books in a library using configurable matching strategies.")

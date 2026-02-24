@@ -84,6 +84,10 @@ export class MetadataViewerComponent implements OnInit, OnChanges, AfterViewChec
   isEditingDateFinished = false;
   editDateFinished: Date | null = null;
 
+  isEditingPurchaseDate = false;
+  editPurchaseDate: Date | null = null;
+  maxDate = new Date();
+
   readStatusOptions: { value: ReadStatus, labelKey: string }[] = [
     {value: ReadStatus.UNREAD, labelKey: 'metadata.viewer.readStatusUnread'},
     {value: ReadStatus.PAUSED, labelKey: 'metadata.viewer.readStatusPaused'},
@@ -102,6 +106,9 @@ export class MetadataViewerComponent implements OnInit, OnChanges, AfterViewChec
   private appSettings$ = this.appSettingsService.appSettings$;
   amazonDomain = 'com';
   navigationState$ = this.bookNavigationService.getNavigationState();
+
+  canEditMetadata = false;
+  isAdmin = false;
 
   ngOnInit(): void {
     this.readMenuItems$ = this.book$.pipe(
@@ -389,6 +396,7 @@ export class MetadataViewerComponent implements OnInit, OnChanges, AfterViewChec
                           }
                         },
                         error: () => {
+                          // Error already handled by dialog
                         }
                       });
                     }
@@ -410,6 +418,8 @@ export class MetadataViewerComponent implements OnInit, OnChanges, AfterViewChec
       )
       .subscribe(userState => {
         this.metadataCenterViewMode = userState.user?.userSettings.metadataCenterViewMode ?? 'route';
+        this.canEditMetadata = userState.user?.permissions?.canEditMetadata ?? false;
+        this.isAdmin = userState.user?.permissions?.admin ?? false;
       });
 
     this.book$
@@ -436,7 +446,7 @@ export class MetadataViewerComponent implements OnInit, OnChanges, AfterViewChec
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['recommendedBooks']) {
       this.originalRecommendedBooks = [...this.recommendedBooks];
-      this.withCurrentBook(book => this.filterRecommendations(book));
+      this.filterRecommendations();
     }
   }
 
@@ -453,10 +463,10 @@ export class MetadataViewerComponent implements OnInit, OnChanges, AfterViewChec
       }),
       switchMap(() => this.book$.pipe(take(1))),
       takeUntilDestroyed(this.destroyRef)
-    ).subscribe(book => this.filterRecommendations(book));
+    ).subscribe(() => this.filterRecommendations());
   }
 
-  private filterRecommendations(book: Book | null): void {
+  private filterRecommendations(): void {
     if (!this.originalRecommendedBooks) return;
     const bookInSeriesIds = new Set(this.bookInSeries.map(book => book.id));
     this.recommendedBooks = this.originalRecommendedBooks.filter(
@@ -648,7 +658,7 @@ export class MetadataViewerComponent implements OnInit, OnChanges, AfterViewChec
       }
 
       this.bookService.updateBookReadStatus(book.id, status).subscribe({
-        next: (updatedBooks) => {
+        next: () => {
           this.selectedReadStatus = status;
           this.messageService.add({
             severity: 'success',
@@ -1201,6 +1211,54 @@ export class MetadataViewerComponent implements OnInit, OnChanges, AfterViewChec
   cancelDateFinishedEdit(): void {
     this.isEditingDateFinished = false;
     this.editDateFinished = null;
+  }
+
+  togglePurchaseDateEdit(book: Book): void {
+    if (!this.canEditMetadata && !this.isAdmin) {
+      return;
+    }
+    if (this.isEditingPurchaseDate) {
+      this.isEditingPurchaseDate = false;
+      this.editPurchaseDate = null;
+      return;
+    }
+    this.isEditingPurchaseDate = true;
+    this.editPurchaseDate = book.purchaseDate ? new Date(book.purchaseDate) : null;
+  }
+
+  savePurchaseDate(book: Book): void {
+    if (!book) return;
+    if (!this.canEditMetadata && !this.isAdmin) {
+      return;
+    }
+
+    const dateToSave = this.editPurchaseDate ? this.editPurchaseDate.toISOString() : null;
+    this.bookService.updatePurchaseDate(book.id, dateToSave).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Purchase Date Updated',
+          detail: 'Book purchase date has been updated.',
+          life: 1500
+        });
+        this.isEditingPurchaseDate = false;
+        this.editPurchaseDate = null;
+      },
+      error: (err) => {
+        console.error('Failed to update purchase date:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Update Failed',
+          detail: err?.error?.message || 'Could not update book purchase date.',
+          life: 3000
+        });
+      }
+    });
+  }
+
+  cancelPurchaseDateEdit(): void {
+    this.isEditingPurchaseDate = false;
+    this.editPurchaseDate = null;
   }
 
   openFileMoverDialog(bookId: number): void {

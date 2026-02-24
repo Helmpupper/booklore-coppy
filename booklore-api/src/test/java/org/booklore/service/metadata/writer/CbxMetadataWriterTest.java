@@ -148,6 +148,7 @@ class CbxMetadataWriterTest {
             assertEquals("14", day);
             assertEquals("42", pageCount);
             assertEquals("en", lang);
+            assertNull(text(doc, "PurchaseDate"), "PurchaseDate should not be written (not in ComicInfo v2.0 schema)");
             if (writerEl != null) {
                 assertTrue(writerEl.contains("Alice"));
                 assertTrue(writerEl.contains("Bob"));

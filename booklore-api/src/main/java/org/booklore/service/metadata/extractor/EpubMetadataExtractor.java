@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -290,6 +291,12 @@ public class EpubMetadataExtractor implements FileMetadataExtractor {
                                 else if (key.equals(BookLoreMetadata.NS_PREFIX + ":hardcover_rating")) safeParseDouble(content, builderMeta::hardcoverRating);
                                 else if (key.equals(BookLoreMetadata.NS_PREFIX + ":lubimyczytac_rating")) safeParseDouble(content, builderMeta::lubimyczytacRating);
                                 else if (key.equals(BookLoreMetadata.NS_PREFIX + ":ranobedb_rating")) safeParseDouble(content, builderMeta::ranobedbRating);
+                                else if (key.equals(BookLoreMetadata.NS_PREFIX + ":purchase_date")) {
+                                    try {
+                                        builderMeta.purchaseDate(Instant.parse(content));
+                                    } catch (Exception ignored) {
+                                    }
+                                }
                                 else if (key.equals(BookLoreMetadata.NS_PREFIX + ":moods")) {
                                     if (StringUtils.isNotBlank(content)) {
                                         builderMeta.moods(parseJsonArrayOrCsv(content));

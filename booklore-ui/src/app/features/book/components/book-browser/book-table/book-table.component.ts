@@ -68,6 +68,7 @@ export class BookTableComponent implements OnInit, OnDestroy, OnChanges {
     {field: 'publishedDate', header: this.t.translate('book.columnPref.columns.publishedDate')},
     {field: 'lastReadTime', header: this.t.translate('book.columnPref.columns.lastReadTime')},
     {field: 'addedOn', header: this.t.translate('book.columnPref.columns.addedOn')},
+    {field: 'purchaseDate', header: 'Purchased'},
     {field: 'fileName', header: this.t.translate('book.columnPref.columns.fileName')},
     {field: 'fileSizeKb', header: this.t.translate('book.columnPref.columns.fileSizeKb')},
     {field: 'language', header: this.t.translate('book.columnPref.columns.language')},
@@ -289,6 +290,11 @@ export class BookTableComponent implements OnInit, OnDestroy, OnChanges {
 
       case 'addedOn':
         return book.addedOn ? this.datePipe.transform(book.addedOn, 'dd-MMM-yyyy') ?? '' : '';
+
+      case 'purchaseDate': {
+        const pDate = book.purchaseDate ?? book.addedOn;
+        return pDate ? this.datePipe.transform(pDate, 'dd-MMM-yyyy') ?? '' : '';
+      }
 
       case 'fileName':
         return book.primaryFile?.fileName ?? '';

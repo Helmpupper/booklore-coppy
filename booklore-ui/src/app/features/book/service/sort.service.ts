@@ -91,6 +91,10 @@ export class SortService {
     locked: (book) => book.metadata?.allMetadataLocked ?? false,
     lastReadTime: (book) => book.lastReadTime ? new Date(book.lastReadTime).getTime() : null,
     addedOn: (book) => book.addedOn ? new Date(book.addedOn).getTime() : null,
+    purchaseDate: (book) => {
+      const date = book.purchaseDate ?? book.addedOn;
+      return date ? new Date(date).getTime() : null;
+    },
     fileSizeKb: (book) => book.fileSizeKb || null,
     fileName: (book) => book.fileName,
     filePath: (book) => book.filePath,
@@ -139,7 +143,7 @@ export class SortService {
     const aValue = extractor(a);
     const bValue = extractor(b);
 
-    let result = this.compareValues(aValue, bValue);
+    const result = this.compareValues(aValue, bValue);
 
     return criterion.direction === SortDirection.ASCENDING ? result : -result;
   }

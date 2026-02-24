@@ -175,7 +175,7 @@ public class PdfProcessor extends AbstractFileProcessor implements BookFileProce
             if (extracted.getTags() != null && !extracted.getTags().isEmpty()) {
                 bookCreatorService.addTagsToBook(extracted.getTags(), bookEntity);
             }
-            
+
             // Ratings
             if (extracted.getAmazonRating() != null) {
                 bookEntity.getMetadata().setAmazonRating(extracted.getAmazonRating());
@@ -194,6 +194,9 @@ public class PdfProcessor extends AbstractFileProcessor implements BookFileProce
             }
             if (extracted.getRating() != null) {
                 bookEntity.getMetadata().setRating(extracted.getRating());
+            }
+            if (extracted.getPurchaseDate() != null) {
+                bookEntity.setPurchaseDate(extracted.getPurchaseDate());
             }
 
         } catch (Exception e) {

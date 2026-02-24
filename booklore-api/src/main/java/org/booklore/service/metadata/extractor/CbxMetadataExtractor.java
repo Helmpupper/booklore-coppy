@@ -22,6 +22,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
@@ -200,6 +201,14 @@ public class CbxMetadataExtractor implements FileMetadataExtractor {
                 )
         );
         builder.language(getTextContent(document, "LanguageISO"));
+
+        String purchaseDateStr = getTextContent(document, "PurchaseDate");
+        if (purchaseDateStr != null && !purchaseDateStr.isBlank()) {
+            try {
+                builder.purchaseDate(Instant.parse(purchaseDateStr.trim()));
+            } catch (Exception ignored) {
+            }
+        }
 
         // GTIN is the standard ComicInfo field for ISBN (EAN/UPC)
         // Validate it's a 13-digit number (ISBN-13/EAN-13)

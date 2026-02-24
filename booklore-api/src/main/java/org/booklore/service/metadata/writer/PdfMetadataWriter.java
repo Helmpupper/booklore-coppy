@@ -392,6 +392,13 @@ public class PdfMetadataWriter implements MetadataWriter {
             }
         });
 
+        // Purchase Date
+        helper.copyPurchaseDate(clear != null && clear.isPurchaseDate(), date -> {
+            if (date != null) {
+                appendBookloreElement(doc, bookloreDescription, "purchase_date", date.toString());
+            }
+        });
+
         if (bookloreDescription.hasChildNodes()) {
             rdfRoot.appendChild(bookloreDescription);
         }

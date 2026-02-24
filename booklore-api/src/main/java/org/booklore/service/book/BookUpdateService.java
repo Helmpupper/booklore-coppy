@@ -10,7 +10,14 @@ import org.booklore.model.entity.*;
 import org.booklore.model.enums.ReadStatus;
 import org.booklore.model.enums.UserPermission;
 import org.booklore.repository.*;
+import org.booklore.model.MetadataClearFlags;
+import org.booklore.model.enums.BookFileType;
+import org.booklore.service.appsettings.AppSettingService;
+import org.booklore.service.file.FileFingerprint;
+import org.booklore.service.metadata.sidecar.SidecarMetadataWriter;
+import org.booklore.service.metadata.writer.MetadataWriterFactory;
 import org.booklore.service.progress.ReadingProgressService;
+import org.booklore.service.restriction.ContentRestrictionService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
@@ -18,6 +25,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -39,6 +47,10 @@ public class BookUpdateService {
     private final BookQueryService bookQueryService;
     private final ReadingProgressService readingProgressService;
     private final EbookViewerPreferenceRepository ebookViewerPreferenceRepository;
+    private final ContentRestrictionService contentRestrictionService;
+    private final MetadataWriterFactory metadataWriterFactory;
+    private final AppSettingService appSettingService;
+    private final SidecarMetadataWriter sidecarMetadataWriter;
 
     public void updateBookViewerSetting(long bookId, BookViewerSettings bookViewerSettings) {
         BookEntity book = bookRepository.findByIdWithBookFiles(bookId).orElseThrow(() -> ApiError.BOOK_NOT_FOUND.createException(bookId));
@@ -357,6 +369,82 @@ public class BookUpdateService {
                         .personalRating(rating)
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updatePurchaseDate(List<Long> bookIds, Instant purchaseDate) {
+        if (purchaseDate != null && purchaseDate.isAfter(Instant.now())) {
+            throw ApiError.INVALID_INPUT.createException("Purchase date cannot be in the future.");
+        }
+
+        if (bookIds == null || bookIds.isEmpty()) {
+            throw ApiError.INVALID_INPUT.createException("Book IDs must be provided.");
+        }
+
+        BookLoreUser user = authenticationService.getAuthenticatedUser();
+        List<BookEntity> books = bookQueryService.findAllWithMetadataByIds(new HashSet<>(bookIds));
+        if (books.size() != bookIds.size()) {
+            if (bookIds.size() == 1) {
+                throw ApiError.BOOK_NOT_FOUND.createException(bookIds.getFirst());
+            }
+            throw ApiError.GENERIC_NOT_FOUND.createException("One or more books not found");
+        }
+
+        boolean isAdmin = user.getPermissions() != null && user.getPermissions().isAdmin();
+        if (!isAdmin) {
+            Set<Long> allowedLibraryIds = user.getAssignedLibraries().stream().map(Library::getId).collect(Collectors.toSet());
+            boolean hasAnyForbiddenLibrary = books.stream().anyMatch(b -> b.getLibrary() == null || !allowedLibraryIds.contains(b.getLibrary().getId()));
+            if (hasAnyForbiddenLibrary) {
+                throw ApiError.FORBIDDEN.createException("You are not authorized to access one or more books.");
+            }
+
+            List<BookEntity> filteredBooks = contentRestrictionService.applyRestrictions(books, user.getId());
+            if (filteredBooks.size() != books.size()) {
+                throw ApiError.FORBIDDEN.createException("You are not authorized to access one or more books.");
+            }
+        }
+
+        for (BookEntity book : books) {
+            book.setPurchaseDate(purchaseDate);
+        }
+        bookRepository.saveAll(books);
+        log.info("Updated purchase date for book(s): {}", bookIds);
+
+        var writeSettings = appSettingService.getAppSettings().getMetadataPersistenceSettings().getSaveToOriginalFile();
+        if (writeSettings.isAnyFormatEnabled()) {
+            for (BookEntity book : books) {
+                persistPurchaseDateToFile(book);
+            }
+        }
+
+        if (sidecarMetadataWriter.isWriteOnUpdateEnabled()) {
+            for (BookEntity book : books) {
+                try {
+                    sidecarMetadataWriter.writeSidecarMetadata(book);
+                } catch (Exception e) {
+                    log.warn("Failed to write sidecar metadata for book ID {}: {}", book.getId(), e.getMessage());
+                }
+            }
+        }
+    }
+
+    private void persistPurchaseDateToFile(BookEntity book) {
+        var primaryFile = book.getPrimaryBookFile();
+        if (primaryFile == null) return;
+        BookFileType bookType = primaryFile.getBookType();
+        if (bookType == null) return;
+
+        metadataWriterFactory.getWriter(bookType).ifPresent(writer -> {
+            try {
+                File file = new File(book.getFullFilePath().toUri());
+                writer.saveMetadataToFile(file, book.getMetadata(), null, new MetadataClearFlags());
+                String newHash = FileFingerprint.generateHash(book.getFullFilePath());
+                primaryFile.setCurrentHash(newHash);
+                bookRepository.save(book);
+            } catch (Exception e) {
+                log.warn("Failed to write purchase date to file for book ID {}: {}", book.getId(), e.getMessage());
+            }
+        });
     }
 
     private Set<Shelf> filterShelvesByUserId(Set<Shelf> shelves, Long userId) {

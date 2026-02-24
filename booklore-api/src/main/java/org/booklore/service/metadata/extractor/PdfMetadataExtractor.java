@@ -32,6 +32,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -156,11 +157,11 @@ public class PdfMetadataExtractor implements FileMetadataExtractor {
                             extractDublinCoreMetadata(xpath, doc, metadataBuilder);
                             extractCalibreMetadata(xpath, doc, metadataBuilder);
                             extractBookloreMetadata(xpath, doc, metadataBuilder);
-                            
+
                             // Debug logging for troubleshooting extraction issues
                             if (log.isDebugEnabled()) {
                                 BookMetadata debugMeta = metadataBuilder.build();
-                                log.debug("PDF XMP extraction results - subtitle: '{}', moods: {}, tags: {}", 
+                                log.debug("PDF XMP extraction results - subtitle: '{}', moods: {}, tags: {}",
                                     debugMeta.getSubtitle(), debugMeta.getMoods(), debugMeta.getTags());
                             }
 
@@ -369,7 +370,7 @@ public class PdfMetadataExtractor implements FileMetadataExtractor {
             if (StringUtils.isNotBlank(isbn13)) {
                 builder.isbn13(isbn13.trim());
             }
-            
+
             String isbn10 = extractBookloreField(xpath, doc, "isbn10");
             if (StringUtils.isNotBlank(isbn10)) {
                 builder.isbn10(isbn10.trim());
@@ -462,9 +463,18 @@ public class PdfMetadataExtractor implements FileMetadataExtractor {
             extractBookloreRating(xpath, doc, "hardcoverRating", "HardcoverRating", builder::hardcoverRating);
             extractBookloreRating(xpath, doc, "lubimyczytacRating", "LubimyczytacRating", builder::lubimyczytacRating);
             extractBookloreRating(xpath, doc, "ranobedbRating", "RanobedbRating", builder::ranobedbRating);
-            
+
             // User rating
             extractBookloreRating(xpath, doc, "rating", "Rating", builder::rating);
+
+            // Purchase date
+            String purchaseDate = xpath.evaluate("//*[local-name()='purchase_date' and namespace-uri()='http://booklore.org/metadata/1.0/']/text()", doc);
+            if (StringUtils.isNotBlank(purchaseDate)) {
+                try {
+                    builder.purchaseDate(Instant.parse(purchaseDate.trim()));
+                } catch (Exception ignored) {
+                }
+            }
 
         } catch (Exception e) {
             log.warn("Failed to extract booklore metadata: {}", e.getMessage(), e);
@@ -509,7 +519,7 @@ public class PdfMetadataExtractor implements FileMetadataExtractor {
     /**
      * Extracts a rating field, trying both new camelCase and old PascalCase format.
      */
-    private void extractBookloreRating(XPath xpath, Document doc, String newName, String legacyName, 
+    private void extractBookloreRating(XPath xpath, Document doc, String newName, String legacyName,
                                         java.util.function.Consumer<Double> setter) {
         try {
             String value = xpath.evaluate("//booklore:" + newName + "/text()", doc);
