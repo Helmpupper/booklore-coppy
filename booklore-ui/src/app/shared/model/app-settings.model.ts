@@ -57,6 +57,7 @@ export interface MetadataProviderSettings {
   douban: Douban;
   lubimyczytac: Lubimyczytac;
   audible: Audible;
+  customProviders?: CustomMetadataProviderConfig[];
 }
 
 export interface Amazon {
@@ -100,6 +101,39 @@ export interface Lubimyczytac {
 export interface Audible {
   enabled: boolean;
   domain: string;
+}
+
+export interface ProviderCapabilities {
+  supportsMetadata?: boolean;
+  supportsCovers?: boolean;
+  supportsIsbnSearch?: boolean;
+  supportsTitleAuthorSearch?: boolean;
+  supportsRatings?: boolean;
+  supportsSeriesInfo?: boolean;
+  supportsEnhancedMetadata?: boolean;
+}
+
+export interface ProviderRateLimit {
+  requestsPerMinute?: number;
+  requestsPerDay?: number;
+}
+
+export interface ExternalProviderCapabilities {
+  providerId: string;
+  providerName: string;
+  version: string;
+  capabilities: ProviderCapabilities;
+  rateLimit?: ProviderRateLimit;
+}
+
+export interface CustomMetadataProviderConfig {
+  id: string;
+  name: string;
+  baseUrl: string;
+  bearerToken?: string;
+  enabled: boolean;
+  capabilities?: ProviderCapabilities;
+  rateLimit?: ProviderRateLimit;
 }
 
 export interface FormatWriteSettings {
