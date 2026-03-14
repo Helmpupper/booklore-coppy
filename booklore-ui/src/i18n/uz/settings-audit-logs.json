@@ -1,0 +1,19 @@
+{
+  "title": "Audit jurnallari",
+  "description": "Tizimda amalga oshirilgan admin uchun muhim harakatlarning yozuvini ko'ring.",
+  "sectionTitle": "Faoliyat jurnali",
+  "filterPlaceholder": "Harakat bo'yicha filtrlash",
+  "userFilterPlaceholder": "Foydalanuvchi bo'yicha filtrlash",
+  "dateRangePlaceholder": "Sana oralig'i bo'yicha filtrlash",
+  "clearFilters": "Barcha filtrarni tozalash",
+  "autoRefresh": "Avtomatik yangilanish (10s)",
+  "pageReport": "{first} dan {last} gacha {totalRecords} yozuvdan ko'rsatilmoqda",
+  "empty": "Audit jurnallari topilmadi",
+  "columns": {
+    "timestamp": "Qachon",
+    "user": "Foydalanuvchi",
+    "action": "Harakat",
+    "description": "Tavsif",
+    "ip": "IP manzil"
+  }
+}

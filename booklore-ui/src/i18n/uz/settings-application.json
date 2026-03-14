@@ -1,0 +1,51 @@
+{
+  "title": "Global sozlamalar",
+  "description": "Booklore nusxangiz uchun global sozlamalarni sozlang, jumladan muqova tasvirlarini boshqarish, qidiruv sozlamalari va fayl yuklash chegaralari.",
+  "covers": {
+    "sectionTitle": "Kitob muqova tasviri",
+    "regenerate": "Muqovalarni qayta yaratish",
+    "regenerateAllBtn": "Barchasini qayta yaratish",
+    "regenerateMissingBtn": "Yo'qlarini qayta yaratish",
+    "regenerateDesc": "Barcha kitoblar uchun fayldagi joylashgan muqovalardan muqova tasvirlarini qayta yaratadi. Faqat hali muqovasi yo'q kitoblar uchun muqova yaratish uchun \"Yo'qlarini qayta yaratish\" dan foydalaning.",
+    "regenerateStarted": "Muqova qayta yaratish boshlandi",
+    "regenerateStartedDetail": "Kitob muqovalari qayta yaratilmoqda.",
+    "regenerateError": "Muqova qayta yaratishni boshlash muvaffaqiyatsiz.",
+    "verticalCropping": "Vertikal muqova kesish",
+    "verticalCroppingDesc": "Foydalanish mumkin bo'lgan muqova miniatyuralarini yaratish uchun juda baland tasvirlarni (masalan, veb komikslar) yuqoridan avtomatik kesadi.",
+    "horizontalCropping": "Gorizontal muqova kesish",
+    "horizontalCroppingDesc": "Foydalanish mumkin bo'lgan muqova miniatyuralarini yaratish uchun juda keng tasvirlarni chapdan avtomatik kesadi.",
+    "aspectRatio": "Aspekt nisbati chegarasi: {{value}}",
+    "aspectRatioDesc": "Bu chegaradan oshgan aspekt nisbati bo'lgan tasvirlar kesiladi. 2.5 qiymati oddiyga qaraganda 2.5x balandroq (yoki kengroq) tasvirlar kesiladi degan ma'noni anglatadi.",
+    "smartCropping": "Aqlli kesish",
+    "smartCroppingDesc": "Qayerda kesishni aniqlashda bir xil rangli hududlarni o'tkazib yuboradi. Muqova tasvirini eng muhim kontentga qaratadi."
+  },
+  "search": {
+    "sectionTitle": "Qidiruv va tavsiyalar",
+    "autoBookSearch": "Avtomatik kitob qidiruvi",
+    "autoBookSearchDesc": "Kitob ma'lumotlari paneli ochilganda avtomatik ravishda metama'lumotlarni mos qilishga harakat qiladi.",
+    "similarBook": "O'xshash kitob tavsiyasi",
+    "similarBookDesc": "Kutubxonangiz asosida o'xshash kitob tavsiyalarini yoqadi yoki o'chiradi."
+  },
+  "fileManagement": {
+    "sectionTitle": "Fayl boshqaruvi",
+    "maxUploadSize": "Maksimal fayl yuklash o'lchami",
+    "maxUploadPlaceholder": "Maksimal o'lcham",
+    "maxUploadDesc": "Har bir yuklangan fayl uchun ruxsat etilgan maksimal o'lchamni (MB da) belgilaydi. Barcha qo'llab-quvvatlanadigan fayl formatlariga qo'llaniladi.",
+    "restartWarning": "O'zgarishlar server qayta ishga tushirilgandan keyin kuchga kiradi",
+    "invalidInput": "Noto'g'ri kiritish",
+    "invalidInputDetail": "Iltimos, MB da to'g'ri maksimal fayl yuklash o'lchamini kiriting."
+  },
+  "appearance": {
+    "sectionTitle": "Tashqi ko'rinish",
+    "supportButtonAnimation": "Qo'llab-quvvatlash tugmasi animatsiyasi",
+    "supportButtonAnimationDesc": "Yuqori paneldagi qo'llab-quvvatlash tugmasida animatsion yurak effektini ko'rsatadi. Buni o'chirish tugmani ko'rinadigan qoldiradi, lekin animatsiyani olib tashlaydi."
+  },
+  "telemetry": {
+    "sectionTitle": "Telemetriya",
+    "enableTelemetry": "Telemetriyani yoqish",
+    "telemetryDesc": "Anonim foydalanish statistikasini ulashish orqali Booklore ni yaxshilashga yordam bering. Bu ma'lumotlar ishlab chiquvchilarga qaysi xususiyatlar eng ko'p ishlatilishini ko'rishga, xatoliklarni aniqlashga va ishlash muammolarini aniqlashga imkon beradi, shuning uchun ular keyingi ishni bilishadi. Hech qachon shaxsiy ma'lumotlar, kitob mazmuni yoki har qanday aniqlanadigan ma'lumot yuborilmaydi. Ma'lumotlar har 24 soatda bir marta Booklore serveriga avtomatik yuboriladi. Bu butunlay xavfsiz va ishlab chiquvchilarga juda foydali."
+  },
+  "settingsSaved": "Sozlamalar saqlandi",
+  "settingsSavedDetail": "Sozlamalar muvaffaqiyatli saqlandi!",
+  "settingsError": "Sozlamalarni saqlashda xatolik yuz berdi."
+}

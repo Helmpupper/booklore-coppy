@@ -1,0 +1,34 @@
+{
+  "title": "Kutubxona metama'lumotlari konfiguratsiyasi",
+  "description": "Kutubxonalaringiz uchun metama'lumotlar olish xatti-harakatini sozlang. Global standartlarni o'rnating va turli provayderlardan kitob metama'lumotlari qanday olinishi nazoratini uchun kutubxona-aniq bekor qilishlarni yarating.",
+  "defaultSettings": {
+    "sectionTitle": "Standart metama'lumotlar sozlamalari",
+    "sectionDesc": "Kitob metama'lumotlar maydonlari uchun global standart provayder ustuvorliklarini o'rnating. Bu sozlamalar quyida bekor qilinmaguncha barcha kutubxonalarga qo'llaniladi. BookLore har bir kitob maydoni uchun ma'lumotlarni topguncha provayderlarni chapdan o'ngga (1-chi → 2-chi → 3-chi → 4-chi ustuvorlik) sinaydi. Tizim avval sizning 1-chi ustuvorlik provayderingizni tekshiradi - agar u provayderda aniq maydon (masalan, tavsif yoki muallif) bo'lmasa, avtomatik ravishda 2-chi ustuvorlikka, keyin 3-chi va nihoyat 4-chi ga o'tadi. Ustuvorlikni butunlay o'tkazib yuborish uchun bo'sh qoldiring. Masalan, agar Amazon (1-chi) da tavsif bo'lmasa, lekin Google Books (2-chi) da bo'lsa, Google ning tavsifi ishlatiladi. Aniqlangan maydonlar uchun olishni butunlay o'chirish uchun Yoqish katakchalaridan foydalaning - o'chirilgan maydonlar provayder sozlamalaridan qat'i nazar butunlay o'tkazib yuboriladi.",
+    "saveButton": "Standart sozlamalarni saqlash",
+    "saveSuccess": "Standart metama'lumotlar variantlari muvaffaqiyatli saqlandi.",
+    "saveFailed": "Saqlash muvaffaqiyatsiz",
+    "saveError": "Standart metama'lumotlar variantlarini saqlash muvaffaqiyatsiz. Iltimos, qayta urinib ko'ring."
+  },
+  "libraryOverrides": {
+    "sectionTitle": "Kutubxona-aniq bekor qilishlar",
+    "sectionDesc": "Aniq kutubxonalarga standart ustuvorlik sozlamalarini bekor qiling. Masalan, badiiy adabiyot uchun Amazon ni, texnik kitoblar uchun Google Books ni afzal ko'rishingiz mumkin. Har bir kutubxona aniqlanmagan maydonlar uchun standartlarga qaytib, o'z provayder ustuvorlik tartibiga ega bo'lishi mumkin. Shuningdek, kutubxona bo'yicha aniq metama'lumotlar maydonlarini yoqish yoki o'chirish mumkin - agar ba'zi kutubxonalarga tavsiflar yoki muqovalar kabi aniq ma'lumot turlari kerak bo'lmasa foydali.",
+    "customSettings": "Maxsus sozlamalar",
+    "defaultSettings": "Standart sozlamalar",
+    "exportSidecar": "Sidecar eksport qilish",
+    "importSidecar": "Sidecar import qilish",
+    "exportTooltip": "Bu kutubxonada barcha kitoblar uchun .metadata.json fayllarini yaratish",
+    "importTooltip": "Bu kutubxonada mavjud .metadata.json fayllaridan metama'lumotlarni import qilish",
+    "saveLibraryButton": "{{name}} sozlamalarini saqlash",
+    "saveSuccess": "Kutubxona metama'lumotlar variantlari muvaffaqiyatli saqlandi.",
+    "saveFailed": "Saqlash muvaffaqiyatsiz",
+    "saveError": "Kutubxona metama'lumotlar variantlarini saqlash muvaffaqiyatsiz. Iltimos, qayta urinib ko'ring.",
+    "exportSuccess": "{{count}} kitob uchun sidecar fayllar eksport qilindi.",
+    "exportComplete": "Eksport tugadi",
+    "exportFailed": "Eksport muvaffaqiyatsiz",
+    "exportError": "Sidecar fayllarini eksport qilish muvaffaqiyatsiz. Iltimos, qayta urinib ko'ring.",
+    "importSuccess": "{{count}} sidecar fayllaridan metama'lumotlar import qilindi.",
+    "importComplete": "Import tugadi",
+    "importFailed": "Import muvaffaqiyatsiz",
+    "importError": "Sidecar fayllaridan import qilish muvaffaqiyatsiz. Iltimos, qayta urinib ko'ring."
+  }
+}

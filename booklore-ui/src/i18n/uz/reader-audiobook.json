@@ -1,0 +1,64 @@
+{
+  "loading": "Audiokitob yuklanmoqda...",
+  "untitled": "Sarlavhasiz",
+  "unknownAuthor": "Noma'lum muallif",
+  "coverAlt": "Muqova",
+  "header": {
+    "backTooltip": "Orqaga",
+    "bookmarksTooltip": "Xatcho'plar",
+    "chaptersTracksTooltip": "Boblar/Treklar"
+  },
+  "trackInfo": {
+    "trackOf": "Trek {{ current }} / {{ total }}",
+    "chapterOf": "Bob {{ current }} / {{ total }}"
+  },
+  "controls": {
+    "previousTrackTooltip": "Oldingi trek",
+    "previousChapterTooltip": "Oldingi bob",
+    "rewindTooltip": "-30s",
+    "forwardTooltip": "+30s",
+    "nextTrackTooltip": "Keyingi trek",
+    "nextChapterTooltip": "Keyingi bob"
+  },
+  "extra": {
+    "addBookmark": "Xatcho'p qo'shish",
+    "sleepTimer": "Uyqu taymeri",
+    "endOfChapter": "Bob oxiri"
+  },
+  "details": {
+    "narratedBy": "{{ narrator }} tomonidan o'qilgan",
+    "kbps": "{{ bitrate }} kbps",
+    "totalDuration": "{{ duration }} jami"
+  },
+  "sidebar": {
+    "tracks": "Treklar",
+    "chapters": "Boblar"
+  },
+  "bookmarks": {
+    "title": "Xatcho'plar",
+    "empty": "Hali xatcho'plar yo'q",
+    "emptyHint": "Joyingizni saqlash uchun xatcho'p qo'shing",
+    "deleteTooltip": "O'chirish",
+    "bookmarkAt": "{{ time }} da xatcho'p"
+  },
+  "sleepTimerMenu": {
+    "minutes15": "15 daqiqa",
+    "minutes30": "30 daqiqa",
+    "minutes45": "45 daqiqa",
+    "minutes60": "60 daqiqa",
+    "endOfChapter": "Bob oxiri",
+    "cancelTimer": "Taymerni bekor qilish"
+  },
+  "toast": {
+    "loadFailed": "Audiokitobni yuklash muvaffaqiyatsiz",
+    "audioLoadFailed": "Audioni yuklash muvaffaqiyatsiz",
+    "sleepTimerSet": "Ijro {{ minutes }} daqiqadan keyin to'xtaydi",
+    "sleepTimerEndOfChapter": "Ijro bob oxirida to'xtaydi",
+    "sleepTimerStopped": "Ijro uyqu taymeri tomonidan to'xtatildi",
+    "bookmarkAdded": "Xatcho'p qo'shildi",
+    "bookmarkExists": "Xatcho'p mavjud",
+    "bookmarkExistsDetail": "Bu joyda allaqachon xatcho'p mavjud",
+    "bookmarkFailed": "Xatcho'p qo'shish muvaffaqiyatsiz",
+    "bookmarkDeleted": "Xatcho'p o'chirildi"
+  }
+}

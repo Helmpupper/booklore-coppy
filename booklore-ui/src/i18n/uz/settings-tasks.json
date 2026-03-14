@@ -1,0 +1,69 @@
+{
+  "title": "Tizim vazifalari menejeri",
+  "description": "Kutubxona texnik xizmati, metama'lumotlar yangilanishi va kesh tozalash uchun avtomatlashtirilgan tizim vazifalarini boshqaring. Takrorlanuvchi operatsiyalarni <a href=\"https://spring.io/blog/2020/11/10/new-in-spring-5-3-improved-cron-expressions\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"cron-link\">Spring cron ifodalari</a> yordamida rejalashtiring.",
+  "systemTasks": {
+    "sectionTitle": "Tizim vazifalari",
+    "sectionDesc": "Vazifalarni qo'lda bajarish, real vaqtda progressni kuzatish va rejalashtirilgan avtomatizatsiyani konfiguratsiya qilish."
+  },
+  "loading": "Vazifalar yuklanmoqda...",
+  "emptyTitle": "Vazifalar mavjud emas",
+  "status": {
+    "running": "Ishlamoqda",
+    "stale": "Eski",
+    "neverRun": "Hech qachon ishlamagan",
+    "justNow": "Hozirgina"
+  },
+  "cron": {
+    "noSchedule": "Reja yo'q",
+    "edit": "Tahrirlash",
+    "placeholder": "masalan, 0 2 * * *",
+    "validationPrefix": "Cron ifodasi aniq 6 ta maydonga ega bo'lishi kerak (soniya, daqiqa, soat, kun, oy, hafta kuni)",
+    "invalidField": "Yaroqsiz {{name}} maydoni: {{value}}",
+    "updateSuccess": "Rejalashtirilgan vazifa konfiguratsiyasi muvaffaqiyatli yangilandi.",
+    "updateError": "Rejalashtirilgan vazifa konfiguratsiyasini yangilash muvaffaqiyatsiz."
+  },
+  "buttons": {
+    "run": "Ishga tushirish",
+    "rerun": "Qayta ishga tushirish"
+  },
+  "metadataReplace": {
+    "label": "Metama'lumotlar almashtirish rejimi:",
+    "selectMode": "Rejimni tanlash",
+    "replaceMissing": "Faqat etishmayotgan metama'lumotlarni yangilash (Tavsiya etiladi)",
+    "replaceAll": "Barcha metama'lumotlarni almashtirish (Mavjudlarni bekor qilish)",
+    "replaceMissingDesc": "Faqat metama'lumot ma'lumotlari etishmayotgan kitoblarni yangilash. Mavjud metama'lumotlar saqlanadi.",
+    "replaceAllDesc": "Barcha kitoblar uchun barcha metama'lumotlarni almashtirish, hatto ular allaqachon metama'lumotlarga ega bo'lsa ham. Ehtiyotkorlik bilan foydalaning, chunki bu mavjud ma'lumotlarni bekor qiladi."
+  },
+  "progress": {
+    "staleWarning": "Bu vazifa qolib ketganga o'xshaydi. 5 daqiqadan ortiq yangilanishlar olinmadi.",
+    "statusLabel": "Holat:",
+    "progressLabel": "Progress:",
+    "startedLabel": "Boshlangan:",
+    "processing": "Qayta ishlanmoqda...",
+    "stuckMessage": "Vazifa qolib ketganga o'xshaydi (yangilanishlar olinmadi)"
+  },
+  "toast": {
+    "taskQueued": "Vazifa navbatga qo'shildi",
+    "taskQueuedDetail": "{{name}} navbatga qo'shildi va fonda ishlaydi.",
+    "taskCompleted": "Vazifa bajarildi",
+    "taskCompletedDetail": "{{name}} muvaffaqiyatli bajarildi.",
+    "taskFailed": "Vazifa muvaffaqiyatsiz",
+    "taskFailedDetail": "{{name}} bajarish muvaffaqiyatsiz bo'ldi.",
+    "taskStarted": "Vazifa boshlandi",
+    "taskStartedDetail": "{{name}} muvaffaqiyatli boshlandi.",
+    "startError": "{{name}} ni boshlash muvaffaqiyatsiz.",
+    "alreadyRunning": "Vazifa allaqachon ishlamoqda",
+    "alreadyRunningDetail": "Bu vazifa allaqachon bajarilmoqda yoki kutilmoqda.",
+    "taskCancelled": "Vazifa bekor qilindi",
+    "cancelledDetail": "Vazifa muvaffaqiyatli bekor qilindi.",
+    "cancelFailed": "Bekor qilish muvaffaqiyatsiz",
+    "cancelError": "Vazifani bekor qilish muvaffaqiyatsiz. Vazifa allaqachon bajarilgan yoki muvaffaqiyatsiz bo'lgan bo'lishi mumkin.",
+    "cancelNoId": "ID siz vazifani bekor qilib bo'lmaydi.",
+    "loadError": "Vazifalarni yuklash muvaffaqiyatsiz",
+    "metadataScheduled": "Metama'lumotlar yangilanishi rejalashtirildi",
+    "metadataScheduledDetail": "Tanlangan kitoblar uchun metama'lumotlar yangilanishi muvaffaqiyatli rejalashtirildi.",
+    "metadataAlreadyRunningDetail": "Metama'lumotlar yangilanish vazifasi allaqachon bajarilmoqda. Boshqasini boshlashdan oldin uni tugashini kuting.",
+    "metadataFailed": "Metama'lumotlar yangilanishi muvaffaqiyatsiz",
+    "metadataFailedDetail": "Metama'lumotlar yangilanishini rejalashtirishda kutilmagan xatolik yuz berdi. Keyinroq qayta urinib ko'ring yoki muammo davom etsa, qo'llab-quvvatlashga murojaat qiling."
+  }
+}

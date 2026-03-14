@@ -1,0 +1,34 @@
+{
+  "title": "Foydalanuvchi profili",
+  "description": "Hisob ma'lumotlaringiz va xavfsizlik sozlamalarini boshqaring",
+  "basicInfo": "Asosiy ma'lumotlar",
+  "username": "Foydalanuvchi nomi",
+  "usernamePlaceholder": "Foydalanuvchi nomi...",
+  "fullName": "To'liq ism",
+  "fullNamePlaceholder": "To'liq ismini kiriting...",
+  "email": "Email",
+  "emailPlaceholder": "Emailni kiriting...",
+  "editProfile": "Profilni tahrirlash",
+  "saveChanges": "O'zgarishlarni saqlash",
+  "security": "Xavfsizlik sozlamalari",
+  "currentPassword": "Joriy parol",
+  "newPassword": "Yangi parol",
+  "confirmNewPassword": "Yangi parolni tasdiqlang",
+  "changePassword": "Parolni o'zgartirish",
+  "loading": "Foydalanuvchi ma'lumotlari yuklanmoqda...",
+  "validation": {
+    "currentPasswordRequired": "Joriy parol talab qilinadi.",
+    "newPasswordRequired": "Yangi parol talab qilinadi.",
+    "passwordMinLength": "Parol kamida 8 ta belgidan iborat bo'lishi kerak.",
+    "confirmPasswordRequired": "Iltimos, yangi parolingizni tasdiqlang.",
+    "passwordMismatch": "Parollar mos kelmaydi."
+  },
+  "toast": {
+    "errorNoUser": "Foydalanuvchi ma'lumotlari mavjud emas.",
+    "noChanges": "O'zgarishlar aniqlanmadi.",
+    "profileUpdated": "Profil muvaffaqiyatli yangilandi",
+    "profileUpdateFailed": "Profilni yangilash muvaffaqiyatsiz",
+    "passwordChanged": "Parol muvaffaqiyatli o'zgartirildi",
+    "passwordChangeFailed": "Parolni o'zgartirish muvaffaqiyatsiz"
+  }
+}

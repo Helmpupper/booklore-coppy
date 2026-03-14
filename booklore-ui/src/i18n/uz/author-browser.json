@@ -1,0 +1,142 @@
+{
+  "pageTitle": "Mualliflar",
+  "browseAllAuthors": "Barcha mualliflarni ko‘rish",
+  "searchPlaceholder": "Muallif nomi bo‘yicha qidirish...",
+  "noAuthorsFound": "Qidiruvingizga mos muallif topilmadi.",
+  "cardSize": "Karta o‘lchami",
+  "sort": {
+    "name": "Nomi",
+    "bookCount": "Kitoblar soni",
+    "matched": "Moslangan",
+    "recentlyAdded": "Yaqinda qo‘shilgan",
+    "recentlyRead": "Yaqinda o‘qilgan",
+    "readingProgress": "O‘qish jarayoni",
+    "avgRating": "O‘rtacha baho",
+    "photo": "Rasm",
+    "seriesCount": "Seriyalar soni"
+  },
+  "filters": {
+    "all": "Barchasi",
+    "matchStatus": "Moslik holati",
+    "matched": "Moslangan",
+    "unmatched": "Moslanmagan",
+    "photoStatus": "Rasm holati",
+    "hasPhoto": "Rasm bor",
+    "noPhoto": "Rasm yo‘q",
+    "readStatus": "O‘qilganlik holati",
+    "allRead": "Hammasi o‘qilgan",
+    "someRead": "Ba'zilari o‘qilgan",
+    "inProgress": "Jarayonda",
+    "unread": "O‘qilmagan",
+    "bookCount": "Kitoblar soni",
+    "library": "Kutubxona",
+    "genre": "Janr",
+    "reset": "Filtrlarni tiklash"
+  },
+  "footer": {
+    "selected": "tanlangan",
+    "autoMatch": "Tanlanganlarni avtomatik moslash",
+    "deleteSelected": "Tanlanganlarni o‘chirish",
+    "selectAll": "Hammasini tanlash",
+    "deselectAll": "Hammasini bekor qilish"
+  },
+  "toast": {
+    "deleteSuccessSummary": "Muallif o‘chirildi",
+    "deleteSuccessDetail": "Muallif muvaffaqiyatli o‘chirildi.",
+    "deleteFailedSummary": "O‘chirish muvaffaqiyatsiz",
+    "deleteFailedDetail": "Muallifni o‘chirib bo‘lmadi.",
+    "autoMatchSuccessSummary": "Avtomatik moslash tugadi",
+    "autoMatchSuccessDetail": "Tanlangan mualliflar muvaffaqiyatli moslandi.",
+    "autoMatchFailedSummary": "Avtomatik moslash muvaffaqiyatsiz",
+    "autoMatchFailedDetail": "Tanlangan mualliflarni avtomatik moslab bo‘lmadi.",
+    "quickMatchSuccessSummary": "Tez moslash tugadi",
+    "quickMatchSuccessDetail": "Muallif muvaffaqiyatli moslandi.",
+    "quickMatchFailedSummary": "Tez moslash muvaffaqiyatsiz",
+    "quickMatchFailedDetail": "Muallifni tez moslab bo‘lmadi.",
+    "deleteSelectedSuccessSummary": "Mualliflar o‘chirildi",
+    "deleteSelectedSuccessDetail": "Tanlangan mualliflar muvaffaqiyatli o‘chirildi."
+  },
+  "card": {
+    "matched": "Moslangan",
+    "quickMatch": "Tez moslash",
+    "book": "kitob",
+    "books": "kitoblar",
+    "menu": {
+      "viewAuthor": "Muallifni ko‘rish",
+      "editAuthor": "Muallifni tahrirlash",
+      "quickMatch": "Tez moslash",
+      "deleteAuthor": "Muallifni o‘chirish"
+    }
+  },
+  "editor": {
+    "nameLabel": "Nomi",
+    "asinLabel": "ASIN",
+    "descriptionLabel": "Tavsif",
+    "saveBtn": "Saqlash",
+    "saving": "Saqlanmoqda...",
+    "uploadPhotoTooltip": "Rasm yuklash",
+    "lockField": "Maydonni qulflash",
+    "unlockField": "Maydonni ochish",
+    "lockAllBtn": "Hammasini qulflash",
+    "unlockAllBtn": "Hammasini ochish",
+    "searchPhotoTooltip": "Rasm qidirish",
+    "searchPhotoTitle": "Muallif rasmini qidirish",
+    "toast": {
+      "successSummary": "Muallif yangilandi",
+      "successDetail": "Muallif ma'lumotlari muvaffaqiyatli yangilandi.",
+      "errorSummary": "Yangilash muvaffaqiyatsiz",
+      "errorDetail": "Muallif ma'lumotlarini yangilab bo‘lmadi.",
+      "photoUploadedSummary": "Rasm yuklandi",
+      "photoUploadedDetail": "Muallif rasmi muvaffaqiyatli yuklandi.",
+      "photoUploadErrorDetail": "Muallif rasmini yuklab bo‘lmadi."
+    }
+  },
+  "detail": {
+    "quickMatchTooltip": "Tez moslash",
+    "loading": "Muallif ma'lumotlari yuklanmoqda...",
+    "booksTab": "Muallif ma'lumotlari",
+    "editTab": "Ma'lumotlarni tahrirlash",
+    "matchTab": "Muallifni qidirish",
+    "showMore": "Ko‘proq ko‘rsatish",
+    "showLess": "Kamroq ko‘rsatish",
+    "booksBy": "{{ name }} muallifining kitoblari",
+    "noBooksFound": "Bu muallif uchun kitob topilmadi."
+  },
+  "photoSearch": {
+    "queryLabel": "Muallif nomi",
+    "queryPlaceholder": "Rasm qidirish uchun muallif nomini kiriting",
+    "searchBtn": "Qidirish",
+    "resetTooltip": "Qidiruvni tiklash",
+    "readyTitle": "Rasm qidirish",
+    "readyHint": "Muallif nomini kiriting va rasm topish uchun Qidirish tugmasini bosing",
+    "searching": "Rasmlar qidirilmoqda...",
+    "noResults": "Rasm topilmadi",
+    "noResultsHint": "Qidiruv so‘zini o‘zgartirib ko‘ring",
+    "resultsFound": "{{ count }} ta rasm topildi",
+    "selectBtn": "Tanlash",
+    "photoAlt": "Muallif rasmi {{ index }}"
+  },
+  "match": {
+    "authorNameLabel": "Muallif nomi",
+    "authorNamePlaceholder": "Qidirish uchun muallif nomini kiriting",
+    "asinLabel": "ASIN",
+    "asinPlaceholder": "To‘g‘ridan-to‘g‘ri qidirish uchun ASIN kiriting",
+    "regionLabel": "Hudud",
+    "searchBtn": "Qidirish",
+    "searching": "Qidirilmoqda...",
+    "noResults": "Natija topilmadi",
+    "noResultsHint": "Qidiruv so‘zini o‘zgartirib ko‘ring, ASIN kiriting yoki boshqa hududni tanlang",
+    "readyToSearch": "Qidirishga tayyor",
+    "readyToSearchHint": "Muallif nomi bo‘yicha qidiring yoki ASIN kiriting",
+    "resultsFound": "{{ count }} ta natija topildi",
+    "matchBtn": "Moslash",
+    "toast": {
+      "searchFailedSummary": "Qidiruv muvaffaqiyatsiz",
+      "searchFailedDetail": "Muallif metama'lumotlarini qidirib bo‘lmadi.",
+      "matchSuccessSummary": "Muallif moslandi",
+      "matchSuccessDetail": "Muallif metama'lumotlari muvaffaqiyatli yangilandi.",
+      "matchFailedSummary": "Moslash muvaffaqiyatsiz",
+      "matchFailedDetail": "Muallifni tashqi metama'lumotlar bilan moslab bo‘lmadi."
+    }
+  }
+}
