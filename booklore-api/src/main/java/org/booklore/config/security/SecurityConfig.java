@@ -2,12 +2,14 @@ package org.booklore.config.security;
 
 import org.booklore.config.security.filter.*;
 import org.booklore.config.security.service.OpdsUserDetailsService;
+import org.booklore.service.appsettings.AppSettingService;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -46,6 +49,7 @@ public class SecurityConfig {
     private final OpdsUserDetailsService opdsUserDetailsService;
     private final JwtAuthenticationFilter dualJwtAuthenticationFilter;
     private final Environment env;
+    @Lazy private final AppSettingService appSettingService;
 
     private static final String[] COMMON_PUBLIC_ENDPOINTS = {
             "/ws/**",                  // WebSocket connections (auth handled in WebSocketAuthInterceptor)
@@ -64,6 +68,20 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public TokenBasedRememberMeServices komgaRememberMeServices() {
+        String rememberMeKey = appSettingService.getAppSettings().getKomgaRememberMeKey();
+        Integer rememberMeDuration = appSettingService.getAppSettings().getKomgaRememberMeDuration();
+        
+        // Create remember-me services for Komga API
+        TokenBasedRememberMeServices rememberMeServices = new TokenBasedRememberMeServices(
+                rememberMeKey,
+                opdsUserDetailsService
+        );
+        rememberMeServices.setTokenValiditySeconds(rememberMeDuration);
+        return rememberMeServices;
     }
 
     @Bean
@@ -92,9 +110,9 @@ public class SecurityConfig {
 
     @Bean
     @Order(2)
-    public SecurityFilterChain komgaBasicAuthSecurityChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain komgaBasicAuthSecurityChain(HttpSecurity http, TokenBasedRememberMeServices komgaRememberMeServices) throws Exception {
         http
-                .securityMatcher("/komga/api/v1/**", "/komga/api/v2/**")
+                .securityMatcher("/komga/**")
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
@@ -107,6 +125,9 @@ public class SecurityConfig {
                             response.setHeader("WWW-Authenticate", "Basic realm=\"Booklore Komga API\"");
                             response.getWriter().write("HTTP Status 401 - " + authException.getMessage());
                         })
+                )
+                .rememberMe(rememberMe -> rememberMe
+                        .rememberMeServices(komgaRememberMeServices)
                 );
 
         return http.build();

@@ -4,6 +4,7 @@ import org.booklore.context.KomgaCleanContext;
 import tools.jackson.core.JsonGenerator;
 import tools.jackson.databind.SerializationContext;
 import tools.jackson.databind.ser.BeanPropertyWriter;
+import tools.jackson.databind.ser.std.NullSerializer;
 
 import java.util.Collection;
 
@@ -15,9 +16,11 @@ import java.util.Collection;
  * - Empty arrays/collections are excluded
  */
 public class KomgaCleanBeanPropertyWriter extends BeanPropertyWriter {
-    
+
     protected KomgaCleanBeanPropertyWriter(BeanPropertyWriter base) {
         super(base);
+        // we need this to report "null" values when clean mode is NOT used
+        super.assignNullSerializer(NullSerializer.instance);
     }
 
     @Override
@@ -39,6 +42,17 @@ public class KomgaCleanBeanPropertyWriter extends BeanPropertyWriter {
             // Exclude empty collections/arrays
             if (value instanceof Collection && ((Collection<?>) value).isEmpty()) {
                 return;
+            }
+        } else  {
+            String propertyName = getName();
+            // Not in clean mode: ensure Lock properties that are null are emitted as false
+            if (propertyName.endsWith("Lock")) {
+                Object value = get(bean);
+                if (value == null) {
+                    gen.writeName(propertyName);
+                    gen.writeBoolean(false);
+                    return;
+                }
             }
         }
         
