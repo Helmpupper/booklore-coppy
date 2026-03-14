@@ -29,9 +29,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +39,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.booklore.model.enums.AuditAction;
@@ -332,41 +331,18 @@ public class BookService {
         if (!file.exists()) {
             throw ApiError.FILE_NOT_FOUND.createException(filePath);
         }
-        Resource resource = new FileSystemResource(file);
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .contentLength(file.length())
-                .body(resource);
-    }
 
-    public void streamBookContent(long bookId, String bookType, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        BookEntity bookEntity = bookRepository.findById(bookId).orElseThrow(() -> ApiError.BOOK_NOT_FOUND.createException(bookId));
-        String filePath;
-        if (bookType != null) {
-            BookFileType requestedType = BookFileType.valueOf(bookType.toUpperCase());
-            BookFileEntity bookFile = bookEntity.getBookFiles().stream()
-                    .filter(bf -> bf.getBookType() == requestedType)
-                    .findFirst()
-                    .orElseThrow(() -> ApiError.FILE_NOT_FOUND.createException("No file of type " + bookType + " found for book"));
-            filePath = bookFile.getFullFilePath().toString();
-        } else {
-            filePath = FileUtils.getBookFullPath(bookEntity);
+        ResponseEntity.BodyBuilder responseBuilder = ResponseEntity.ok();
+        Instant lastModified = FileUtils.getFileLastModified(filePath);
+
+        if (lastModified != null) {
+            responseBuilder.cacheControl(CacheControl.noCache().cachePrivate());
+            responseBuilder.lastModified(lastModified);
         }
 
-        Path path = Paths.get(filePath);
-        String fileName = path.getFileName().toString();
-        String extension = fileName.contains(".") ? fileName.substring(fileName.lastIndexOf('.') + 1) : "";
-        String contentType = switch (extension.toLowerCase()) {
-            case "pdf" -> "application/pdf";
-            case "epub" -> "application/epub+zip";
-            case "mobi", "azw3" -> "application/x-mobipocket-ebook";
-            case "cbz" -> "application/vnd.comicbook+zip";
-            case "cbr" -> "application/vnd.comicbook-rar";
-            case "fb2" -> "application/x-fictionbook+xml";
-            default -> "application/octet-stream";
-        };
-
-        fileStreamingService.streamWithRangeSupport(path, contentType, request, response);
+        return responseBuilder
+                .contentType(MediaTypeFactory.getMediaType(filePath).orElse(MediaType.APPLICATION_OCTET_STREAM))
+                .body(new FileSystemResource(file));
     }
 
     @Transactional
