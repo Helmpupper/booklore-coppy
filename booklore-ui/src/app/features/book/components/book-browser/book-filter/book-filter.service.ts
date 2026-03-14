@@ -12,8 +12,9 @@ import {EntityType} from '../book-browser.component';
 import {Filter, FILTER_CONFIGS, FILTER_EXTRACTORS, FilterType, FilterValue, NUMERIC_ID_FILTER_TYPES, SortMode} from './book-filter.config';
 import {filterBooksByFilters} from '../filters/sidebar-filter';
 import {BookFilterMode} from '../../../../settings/user-management/user.service';
+import { DEFAULT_FILTER_LIMIT } from './book-filter.constants';
 
-const MAX_FILTER_ITEMS = 100;
+const MAX_FILTER_ITEMS = DEFAULT_FILTER_LIMIT;
 
 @Injectable({providedIn: 'root'})
 export class BookFilterService {
@@ -171,9 +172,13 @@ export class BookFilterService {
     }
 
     const filters = Array.from(filterMap.values());
-    const sorted = sortMode === 'sortIndex'
-      ? this.sortFiltersBySortIndex(filters)
-      : this.sortFiltersByCount(filters);
+    const sorted = filters.sort((a, b) =>
+	String(a.value.name ?? a.value).localeCompare(
+	String(b.value.name ?? b.value),
+	undefined,
+	{ sensitivity: 'base' }
+	)
+	);
 
     return sorted.slice(0, MAX_FILTER_ITEMS);
   }
