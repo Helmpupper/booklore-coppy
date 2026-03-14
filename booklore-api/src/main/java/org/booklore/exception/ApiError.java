@@ -73,7 +73,8 @@ public enum ApiError {
     OIDC_INVALID_REDIRECT_URI(HttpStatus.BAD_REQUEST, "Invalid redirect URI"),
     OIDC_LOGOUT_REPLAY(HttpStatus.BAD_REQUEST, "Logout token has already been processed"),
     OIDC_LOGOUT_MISSING_JTI(HttpStatus.BAD_REQUEST, "Logout token missing required jti claim"),
-    OIDC_INVALID_STATE(HttpStatus.BAD_REQUEST, "Invalid or expired OIDC state parameter");
+    OIDC_INVALID_STATE(HttpStatus.BAD_REQUEST, "Invalid or expired OIDC state parameter"),
+    TOO_MANY_HARDCOVER_IMPORTS(HttpStatus.TOO_MANY_REQUESTS, "Too many hardcover imports triggered. Please wait before importing again.");
 
     private final HttpStatus status;
     private final String message;
